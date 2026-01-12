@@ -1,19 +1,34 @@
 # VEIL
 Keep yourself safe.
 
-## Purpose of the App
-VEIL is a Flutter-based mobile application designed to help users monitor their digital privacy and basic cybersecurity. The app tracks risks related to data breaches, phishing attacks, and insecure device states, providing clear guidance on potential threats.
-## Problem It Solves
-Most users are unaware of how and where their personal data is used and often discover security issues only after a breach occurs. VEIL addresses this lack of transparency by offering actionable insights and timely alerts about digital threats.
-## Target Audience
-The app is intended for non-technical users, including students, older teens, and active internet users aged 16–35, who want to protect their personal data across social networks and online services without dealing with complex settings.
+**Минималистичное приложение для контроля цифровой приватности и безопасности.**  
+VEIL помогает отслеживать утечки данных, фишинговые угрозы и состояние безопасности устройства, используя надёжные публичные и системные API. Приложение уведомляет пользователя только при реальных рисках и помогает принимать осознанные меры защиты.
 
-## Для чего предназначено приложение
-VEIL — мобильное приложение, разработанное на Flutter, предназначенное для контроля цифровой приватности и базовой кибербезопасности пользователя. Приложение помогает отслеживать риски, связанные с утечками персональных данных, фишинговыми атаками и небезопасным состоянием устройства.
-## Какую проблему решает приложение
-Большинство пользователей не понимают, где и как используются их персональные данные, и узнают о проблемах безопасности уже после взлома. VEIL решает проблему отсутствия прозрачности и контроля, предоставляя понятную информацию о цифровых угрозах и своевременные предупреждения.
-## Целевая аудитория
-Приложение создано для обычных пользователей без технической подготовки: студентов, школьников старших классов и активных пользователей интернета в возрасте 16–35 лет, которые используют социальные сети, онлайн-сервисы и хотят защитить свои данные без сложных настроек.
+---
+
+# VEIL
+
+**A minimalist app for monitoring digital privacy and security.**  
+VEIL tracks data breaches, phishing threats, and device security using trusted public and system APIs. It notifies users only about real risks and provides actionable guidance to protect personal data.
+
+---
+
+## Для чего предназначено / Purpose
+
+VEIL — мобильное приложение на Flutter, предназначенное для прозрачного контроля цифровой безопасности.  
+VEIL is a Flutter-based mobile app designed to provide clear insights into digital security risks.
+
+## Проблема / Problem
+
+Пользователи часто не знают, где и как используются их данные, и узнают о проблемах только после взлома.  
+Most users are unaware of how their personal data is used and discover issues only after a breach occurs.
+
+## Целевая аудитория / Target Audience
+
+Обычные пользователи без технической подготовки: студенты, старшие школьники, активные интернет-пользователи 16–35 лет.  
+Non-technical users: students, older teens, and active internet users aged 16–35, who want to protect personal data without complex settings.
+
+---------------
 
 made by group 9-3-ПО-22
 
