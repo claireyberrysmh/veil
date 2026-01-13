@@ -31,6 +31,7 @@ Non-technical users: students, older teens, and active internet users aged 16–
 ---------------
 
 made by group 9-3-ПО-22
+figma: https://www.figma.com/design/uFSrJIp6IfMiow0kEjfTGL/Untitled?node-id=0-1&t=5oVFIcL1ojHJ9z2K-1
 
 Шалгынбай Бекторе
 
