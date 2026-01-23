@@ -38,3 +38,5 @@ figma: https://www.figma.com/design/uFSrJIp6IfMiow0kEjfTGL/Untitled?node-id=0-1&
 Шалгынбай Бекторе
 
 Айгожин Алинур
+
+# google disk: https://drive.google.com/drive/folders/1PLJiLbs6wMdzcYRYhmd-j5C7gyTzRrWS?usp=sharing
