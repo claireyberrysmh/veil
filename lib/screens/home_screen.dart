@@ -225,8 +225,9 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 20),
 
             // Tip of the Day
+            
             _buildTipOfTheDay(),
-
+            
             const SizedBox(height: 20),
             const Text(
               'Quick Actions',
