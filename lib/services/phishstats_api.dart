@@ -1,35 +1,61 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-/// Пример получения данных из PhishStats API
-Future<void> fetchPhishingData() async {
+/// Модель для одного поста из PhishStats
+class PhishPost {
+  final String id;
+  final String title;
+  final String url;
+  final String? countrycode;
+  final num? score;
+  final String? date;
+  final String? ip;
+  final String? tld;
+
+  PhishPost({
+    required this.id,
+    required this.title,
+    required this.url,
+    this.countrycode,
+    this.score,
+    this.date,
+    this.ip,
+    this.tld,
+  });
+
+  factory PhishPost.fromJson(Map<String, dynamic> json) {
+    return PhishPost(
+      id: json['id']?.toString() ?? '',
+      title: json['title']?.toString() ?? '',
+      url: json['url']?.toString() ?? '',
+      countrycode: json['countrycode']?.toString(),
+      score: json['score'],
+      date: json['date']?.toString(),
+      ip: json['ip']?.toString(),
+      tld: json['tld']?.toString(),
+    );
+  }
+}
+
+/// Получает последний пост из PhishStats (или null при ошибке)
+Future<PhishPost?> fetchLatestPhishingPost() async {
   try {
-    // Запрос последнего поста с сортировкой по дате
     final response = await http.get(
       Uri.parse('https://api.phishstats.info/api/phishing?_sort=-date&_size=1'),
     );
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-
-      // Получаем первый результат
-      if (data.isNotEmpty) {
-        final post = data[0];
-
-        print('=== PhishStats API Result ===');
-        print('ID: ${post['id']}');
-        print('Заголовок: ${post['title']}');
-        print('URL: ${post['url']}');
-        print('Страна: ${post['countrycode']}');
-        print('Оценка: ${post['score']}');
-        print('Дата: ${post['date']}');
-        print('IP: ${post['ip']}');
-        print('TLD: ${post['tld']}');
+      if (data is List && data.isNotEmpty) {
+        return PhishPost.fromJson(data[0]);
       }
+      return null;
     } else {
-      print('Ошибка: ${response.statusCode}');
+      // Неудачный ответ
+      return null;
     }
   } catch (e) {
-    print('Ошибка сети: $e');
+    // Ошибка сети / парсинга
+    return null;
   }
 }

@@ -1,9 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../data/security_tips.dart';
+import '../services/phishstats_api.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   final VoidCallback? onOpenDetails;
-  const HomeScreen({Key? key, this.onOpenDetails}) : super(key: key);
+  const HomeScreen({super.key, this.onOpenDetails});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late Future<PhishPost?> _latestPostFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _latestPostFuture = fetchLatestPhishingPost();
+  }
+
+  String _extractDomain(String url) {
+    try {
+      final uri = Uri.parse(url);
+      return uri.host.isNotEmpty ? uri.host : url;
+    } catch (e) {
+      return url;
+    }
+  }
 
   Color _severityColor(String severity) {
     switch (severity) {
@@ -18,7 +42,7 @@ class HomeScreen extends StatelessWidget {
 
   Widget _alertCard(String title, String subtitle, String severity) {
     return GestureDetector(
-      onTap: onOpenDetails,
+      onTap: widget.onOpenDetails,
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 8),
         padding: const EdgeInsets.all(16),
@@ -163,6 +187,242 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
+  Widget _buildInfoChip(String label, String value) {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: Colors.black54,
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: Colors.white10),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(
+              color: Colors.white54,
+              fontSize: 9,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            value,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 11,
+            ),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLatestPhishBanner() {
+    return FutureBuilder<PhishPost?>(
+      future: _latestPostFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.black87,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.redAccent.withOpacity(0.3)),
+            ),
+            child: const Row(
+              children: [
+                SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.redAccent),
+                  ),
+                ),
+                SizedBox(width: 12),
+                Text(
+                  'Loading latest phishing report...',
+                  style: TextStyle(color: Colors.white70),
+                ),
+              ],
+            ),
+          );
+        } else if (snapshot.hasError) {
+          return Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.black87,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.redAccent.withOpacity(0.3)),
+            ),
+            child: const Row(
+              children: [
+                Icon(Icons.error_outline, color: Colors.redAccent),
+                SizedBox(width: 12),
+                Text(
+                  'Error loading data',
+                  style: TextStyle(color: Colors.white70),
+                ),
+              ],
+            ),
+          );
+        } else if (!snapshot.hasData || snapshot.data == null) {
+          return const SizedBox.shrink();
+        }
+
+        final post = snapshot.data!;
+        final date = post.date != null ? post.date!.split('T').first : 'N/A';
+        final domain = _extractDomain(post.url);
+
+        return Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.red[950],
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.redAccent.withOpacity(0.4)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.warning_rounded,
+                        color: Colors.redAccent,
+                        size: 18,
+                      ),
+                      const SizedBox(width: 6),
+                      const Text(
+                        'PHISHING ALERT',
+                        style: TextStyle(
+                          color: Colors.redAccent,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 0.5,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 3,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.redAccent.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(4),
+                      border: Border.all(
+                        color: Colors.redAccent.withOpacity(0.5),
+                        width: 0.5,
+                      ),
+                    ),
+                    child: const Text(
+                      'NEW',
+                      style: TextStyle(
+                        color: Colors.redAccent,
+                        fontSize: 9,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 0.3,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.black54,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.white10),
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.language, color: Colors.redAccent, size: 18),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Malicious Domain',
+                            style: TextStyle(
+                              color: Colors.white54,
+                              fontSize: 10,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            domain,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 13,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () async {
+                        await Clipboard.setData(ClipboardData(text: domain));
+                        if (mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Domain copied'),
+                              duration: Duration(seconds: 1),
+                            ),
+                          );
+                        }
+                      },
+                      icon: const Icon(Icons.copy, color: Colors.white54),
+                      iconSize: 18,
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildInfoChip(
+                      '🌍 Location',
+                      post.countrycode ?? 'Unknown',
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: _buildInfoChip(
+                      '📊 Score',
+                      '${(post.score ?? 0).toStringAsFixed(1)}%',
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(child: _buildInfoChip('📅 Date', date)),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -225,9 +485,12 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 20),
 
             // Tip of the Day
-            
             _buildTipOfTheDay(),
-            
+            const SizedBox(height: 12),
+
+            // Latest Phishing Report Banner
+            _buildLatestPhishBanner(),
+
             const SizedBox(height: 20),
             const Text(
               'Quick Actions',
@@ -249,7 +512,7 @@ class HomeScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             OutlinedButton(
-              onPressed: onOpenDetails,
+              onPressed: widget.onOpenDetails,
               style: OutlinedButton.styleFrom(
                 minimumSize: const Size.fromHeight(48),
                 side: const BorderSide(color: Colors.white12),

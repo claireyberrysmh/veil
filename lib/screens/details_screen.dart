@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class DetailsScreen extends StatelessWidget {
-  const DetailsScreen({Key? key}) : super(key: key);
+  const DetailsScreen({super.key});
 
   Widget _recItem(String title, String subtitle) {
     return Container(

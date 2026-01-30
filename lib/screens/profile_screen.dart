@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  const ProfileScreen({super.key});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -209,7 +209,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     value: _twoFactorEnabled,
                     onChanged: (value) =>
                         setState(() => _twoFactorEnabled = value),
-                    activeColor: Colors.greenAccent,
+                    activeThumbColor: Colors.greenAccent,
                   ),
                 ],
               ),
@@ -248,7 +248,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     value: _emailNotificationsEnabled,
                     onChanged: (value) =>
                         setState(() => _emailNotificationsEnabled = value),
-                    activeColor: Colors.greenAccent,
+                    activeThumbColor: Colors.greenAccent,
                   ),
                 ],
               ),
