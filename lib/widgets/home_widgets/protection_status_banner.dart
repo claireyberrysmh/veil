@@ -9,8 +9,9 @@ class ProtectionStatusBanner extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.green[900],
+        color: Colors.grey[900],
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.green, width: 1.5),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

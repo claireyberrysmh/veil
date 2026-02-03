@@ -33,8 +33,9 @@ class AlertCard extends StatelessWidget {
         margin: const EdgeInsets.symmetric(vertical: 8),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.black87,
+          color: Colors.grey[900],
           borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.grey[800]!),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -31,7 +31,7 @@ class AlertDetailsCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.black87,
+        color: Colors.grey[900],
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: _severityColor(severity)),
       ),

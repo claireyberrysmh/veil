@@ -30,9 +30,16 @@ class QuickActionButtons extends StatelessWidget {
           onPressed: onCheckMail ?? () {},
           style: ElevatedButton.styleFrom(
             minimumSize: const Size.fromHeight(48),
-            backgroundColor: Colors.green[600],
+            backgroundColor: Colors.green,
           ),
-          child: const Text('Check mail'),
+          child: const Text(
+            'Check Email',
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+          ),
         ),
         const SizedBox(height: 8),
         OutlinedButton(
@@ -40,9 +47,10 @@ class QuickActionButtons extends StatelessWidget {
           style: OutlinedButton.styleFrom(
             minimumSize: const Size.fromHeight(48),
             side: const BorderSide(color: Colors.white12),
+            backgroundColor: Colors.transparent,
           ),
           child: const Text(
-            'View alerts',
+            'View Alerts',
             style: TextStyle(color: Colors.white),
           ),
         ),
@@ -52,6 +60,7 @@ class QuickActionButtons extends StatelessWidget {
           style: OutlinedButton.styleFrom(
             minimumSize: const Size.fromHeight(48),
             side: const BorderSide(color: Colors.white12),
+            backgroundColor: Colors.transparent,
           ),
           child: const Text('Settings', style: TextStyle(color: Colors.white)),
         ),

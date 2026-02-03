@@ -12,6 +12,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return HomeScreenSection(onOpenDetails: onOpenDetails);
+    return HomeScreenSection(onOpenDetails: widget.onOpenDetails);
   }
 }

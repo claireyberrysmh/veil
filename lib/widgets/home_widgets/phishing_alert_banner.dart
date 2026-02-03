@@ -27,7 +27,7 @@ class PhishingAlertBanner extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.black87,
+              color: Colors.grey[900],
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: Colors.redAccent.withOpacity(0.3)),
             ),
@@ -54,7 +54,7 @@ class PhishingAlertBanner extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.black87,
+              color: Colors.grey[900],
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: Colors.redAccent.withOpacity(0.3)),
             ),
@@ -81,7 +81,7 @@ class PhishingAlertBanner extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.red[950],
+            color: Colors.grey[900],
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: Colors.redAccent.withOpacity(0.4)),
           ),
