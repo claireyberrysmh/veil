@@ -5,6 +5,7 @@ import 'phishing_alert_banner.dart';
 import 'quick_action_buttons.dart';
 import 'protection_status_banner.dart';
 import 'recent_alerts.dart';
+import '../notification_test_widget.dart';
 
 class HomeScreenSection extends StatefulWidget {
   final VoidCallback? onOpenDetails;
@@ -51,6 +52,8 @@ class _HomeScreenSectionState extends State<HomeScreenSection> {
               onViewAlerts: widget.onOpenDetails,
               onSettings: () {},
             ),
+            const SizedBox(height: 24),
+            const NotificationTestWidget(),
             const SizedBox(height: 24),
             RecentAlerts(onAlertTap: widget.onOpenDetails),
             const SizedBox(height: 80),
