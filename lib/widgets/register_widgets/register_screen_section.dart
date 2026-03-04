@@ -17,6 +17,7 @@ class RegisterScreenSection extends StatefulWidget {
 
 class _RegisterScreenSectionState extends State<RegisterScreenSection> {
   final _usernameController = TextEditingController();
+  final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   bool _isLoading = false;
@@ -25,6 +26,7 @@ class _RegisterScreenSectionState extends State<RegisterScreenSection> {
   @override
   void dispose() {
     _usernameController.dispose();
+    _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
@@ -32,6 +34,7 @@ class _RegisterScreenSectionState extends State<RegisterScreenSection> {
 
   Future<void> _handleRegister() async {
     final username = _usernameController.text.trim();
+    final email = _emailController.text.trim();
     final password = _passwordController.text;
     final confirmPassword = _confirmPasswordController.text;
 
@@ -48,6 +51,16 @@ class _RegisterScreenSectionState extends State<RegisterScreenSection> {
       setState(
         () => _errorMessage = 'Логин должен содержать минимум 3 символа',
       );
+      return;
+    }
+
+    if (email.isEmpty) {
+      setState(() => _errorMessage = 'Пожалуйста, введите email');
+      return;
+    }
+
+    if (!email.contains('@')) {
+      setState(() => _errorMessage = 'Пожалуйста, введите валидный email');
       return;
     }
 
@@ -71,7 +84,7 @@ class _RegisterScreenSectionState extends State<RegisterScreenSection> {
     setState(() => _isLoading = true);
 
     try {
-      final success = await AuthService.register(username, password);
+      final success = await AuthService.register(username, password, email: email);
 
       if (!mounted) return;
 
@@ -131,6 +144,18 @@ class _RegisterScreenSectionState extends State<RegisterScreenSection> {
               decoration: InputDecoration(
                 hintText: 'Логин',
                 prefixIcon: const Icon(Icons.person),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                enabled: !_isLoading,
+              ),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: _emailController,
+              decoration: InputDecoration(
+                hintText: 'Email',
+                prefixIcon: const Icon(Icons.email),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),

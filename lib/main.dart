@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
-import 'screens/details_screen.dart';
+import 'screens/alerts_screen.dart';
 import 'screens/profile_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/register_screen.dart';
 import 'services/auth_service.dart';
+import 'services/navigation_service.dart';
 import 'services/notification_service.dart';
 
 void main() async {
@@ -21,9 +22,44 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'VEIL',
+      navigatorKey: NavigationService.navigatorKey,
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: const Color(0xFF1a1a1a),
         primaryColor: Colors.green,
+        textTheme: ThemeData.dark().textTheme.copyWith(
+              headlineSmall: const TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+              titleMedium: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: Colors.white70,
+              ),
+              bodyMedium: const TextStyle(
+                fontSize: 14,
+                color: Colors.white70,
+              ),
+            ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.green[600],
+            minimumSize: const Size.fromHeight(48),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+        ),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: OutlinedButton.styleFrom(
+            minimumSize: const Size.fromHeight(48),
+            side: const BorderSide(color: Colors.white24),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+        ),
       ),
       home: const AuthWrapper(),
     );
@@ -118,7 +154,7 @@ class _MainNavigationState extends State<MainNavigation> {
   Widget build(BuildContext context) {
     final pages = [
       HomeScreen(onOpenDetails: () => _onItemTapped(1)),
-      const DetailsScreen(),
+      const AlertsScreen(),
       ProfileScreen(onLogout: widget.onLogout),
     ];
 
@@ -133,8 +169,8 @@ class _MainNavigationState extends State<MainNavigation> {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
-            icon: Icon(Icons.info_outline),
-            label: 'Details',
+            icon: Icon(Icons.notifications_outlined),
+            label: 'Alerts',
           ),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],

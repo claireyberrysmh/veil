@@ -1,6 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tzdata;
+
+import '../screens/alert_detail_screen.dart';
+import 'alert_repository.dart';
+import 'navigation_service.dart';
 
 class NotificationService {
   static final NotificationService _instance = NotificationService._internal();
@@ -33,7 +38,7 @@ class NotificationService {
         );
 
     await _notificationsPlugin.initialize(
-      initializationSettings,
+      settings: initializationSettings,
       onDidReceiveNotificationResponse: _onNotificationTap,
     );
 
@@ -47,8 +52,34 @@ class NotificationService {
 
   // Обработка клика на уведомление
   void _onNotificationTap(NotificationResponse notificationResponse) {
-    // Здесь можно обработать нажатие на уведомление
-    print('Notification tapped: ${notificationResponse.payload}');
+    final payload = notificationResponse.payload;
+    if (payload == null || payload.isEmpty) {
+      return;
+    }
+
+    final navigator = NavigationService.navigatorKey.currentState;
+    if (navigator == null) return;
+
+    _openAlertFromPayload(navigator, payload);
+  }
+
+  Future<void> _openAlertFromPayload(
+    NavigatorState navigator,
+    String payload,
+  ) async {
+    // Ожидаем payload вида 'alert:<id>'
+    if (!payload.startsWith('alert:')) return;
+    final id = payload.substring('alert:'.length);
+    if (id.isEmpty) return;
+
+    final alert = await AlertRepository.getAlertById(id);
+    if (alert == null) return;
+
+    navigator.push(
+      MaterialPageRoute(
+        builder: (_) => AlertDetailScreen(alert: alert),
+      ),
+    );
   }
 
   // Показать простое уведомление
@@ -80,10 +111,10 @@ class NotificationService {
     );
 
     await _notificationsPlugin.show(
-      id,
-      title,
-      body,
-      notificationDetails,
+      id: id,
+      title: title,
+      body: body,
+      notificationDetails: notificationDetails,
       payload: payload,
     );
   }
@@ -117,21 +148,19 @@ class NotificationService {
     );
 
     await _notificationsPlugin.zonedSchedule(
-      id,
-      title,
-      body,
-      tz.TZDateTime.now(tz.local).add(delay),
-      notificationDetails,
+      id: id,
+      title: title,
+      body: body,
+      scheduledDate: tz.TZDateTime.now(tz.local).add(delay),
+      notificationDetails: notificationDetails,
       androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
       payload: payload,
     );
   }
 
   // Отменить уведомление
   Future<void> cancelNotification(int id) async {
-    await _notificationsPlugin.cancel(id);
+    await _notificationsPlugin.cancel(id: id);
   }
 
   // Отменить все уведомления
